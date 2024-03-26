@@ -10,15 +10,7 @@ import moment from "moment";
 const ManagePatients = ({ pharmacyName }) => {
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   // const socket = io(`wss://api.maldomed.com`);
-  const socket = io(`$api_url`);
-  // const socket = io(`wss://api.maldomed.com`,{transports: ['polling']});
-
-  // console.log(socket)
-  //   function showNotification(message, type) {
-  //     toast[type](message, {
-  //       duration: 5000, // 5 seconds
-  //     });
-  //   }
+  const socket = io(`${api_url}`);
 
   function showNotification(message, type) {
     toast[type](message, {
