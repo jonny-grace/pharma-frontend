@@ -39,7 +39,7 @@ const Navbar = () => {
     setIsLoggedIn(false); // Update logged-in status
     router.push("/");
   };
-  console.log(user);
+  // console.log(user);
   return (
     <>
       {user && (
@@ -57,7 +57,7 @@ const Navbar = () => {
               className="h-20 w-full object-contain"
             />
             <button
-              className="flex items-center gap-2 px-5 py-2 border-2 border-white rounded-full text-sm"
+              className="flex items-center gap-2 px-5 py-2 border-2 border-white rounded-full text-sm text-white"
               onClick={logout}
             >
               <span>Logout</span>
