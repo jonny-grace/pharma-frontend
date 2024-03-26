@@ -51,8 +51,11 @@ function Login() {
           } else if (response.ok) {
             return response.json();
           } else {
-            throw new Error("Network response was not ok.");
+           
+            localStorage.removeItem("token");
+            localStorage.removeItem("userData");
             showNotification(`Invalid username or password `, "error");
+             throw new Error("Network response was not ok.");
           }
         })
         .then((data) => {
@@ -83,13 +86,15 @@ function Login() {
           } else if (role === "nurse" && data.userData.status === "active") {
             router.push("/nurse");
           } else if (
-            role === "pharmacist" &&
+            role === "pharmaciest" &&
             data.userData.status === "active"
           ) {
-            router.push("/pharmacist");
-          } else if (role === "doctor" && data.userData.status === "active") {
+            router.push("/pharmaciest");
+          }
+           else if (role === "doctor" && data.userData.status === "active") {
             router.push("/doctor");
-          } else {
+          }
+           else {
             showNotification(`Your account is not activated yet`, "error");
             // i want to remove the localstorage token and userdata
             localStorage.removeItem("token");
