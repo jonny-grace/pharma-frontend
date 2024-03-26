@@ -162,7 +162,7 @@ function page() {
   console.log(user);
 
   return (
-    <div className="flex min-h-screen mt-[90px]">
+    <div className="flex min-h-screen mt-[110px]">
       <div></div>
       <Sidebar
         options={options}
