@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast';
 const ManagePatients = ({pharmacyName}) => {
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   // const socket = io(`wss://api.maldomed.com`);
-  const socket =io(`$api_url`);
+  const socket =io(`${api_url}`);
   // const socket = io(`wss://api.maldomed.com`,{transports: ['polling']});
  
   // console.log(socket)
