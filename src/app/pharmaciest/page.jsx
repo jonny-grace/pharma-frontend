@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import axios from "axios";
-import FindPatient from "@/Components/Nurse/FindPatient";
+import FindPatient from "@/Components/Pharmaciest/FindPatient";
 
 function page() {
   const api_url = process.env.NEXT_PUBLIC_API_URL;
