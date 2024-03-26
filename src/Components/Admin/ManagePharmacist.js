@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 
 const ManagePharmacist = () => {
   const router = useRouter();
-  const [receptions, setreceptions] = useState([]);
+  const [Pharmaciest, setPharmaciest] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
 
@@ -20,53 +20,53 @@ const ManagePharmacist = () => {
   }
 
   useEffect(() => {
-    const fetchreceptions = async () => {
+    const fetchPharmaciest = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/receptions`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/pharmaciest`);
         const data = await response.json();
       //  console.log(data);
-        setreceptions(data);
+        setPharmaciest(data);
       } catch (error) {
-        console.error('Error fetching receptions:', error);
+        console.error('Error fetching Pharmaciest:', error);
       }
     };
 
-    fetchreceptions();
+    fetchPharmaciest();
   }, []);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleToggle = async (receptionId, currentStatus) => {
+  const handleToggle = async (pharmaciestId, currentStatus) => {
     try {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/admin/reception/status/${receptionId}`, {
-        receptionId,
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/admin/pharmaciest/status/${pharmaciestId}`, {
+        pharmaciestId,
         status: newStatus
       });
-      const updatedreception = response.data;
-      const updatedreceptions = receptions.map((reception) =>
-        reception.userId === updatedreception.userId ? updatedreception : reception
+      const updatedpharmaciest = response.data;
+      const updatedPharmaciest = Pharmaciest.map((pharmaciest) =>
+        pharmaciest.userId === updatedpharmaciest.userId ? updatedpharmaciest : pharmaciest
       );
-      setreceptions(updatedreceptions);
-      showNotification(`reception status updated`, 'success');
+      setPharmaciest(updatedPharmaciest);
+      showNotification(`pharmaciest status updated`, 'success');
      window.location.reload();
-    //   toast.success(`reception ${updatedreception.receptionName} ${newStatus === 'active' ? 'activated' : 'deactivated'}`);
+    //   toast.success(`pharmaciest ${updatedpharmaciest.pharmaciestName} ${newStatus === 'active' ? 'activated' : 'deactivated'}`);
     } catch (error) {
-      console.error('Error updating reception status:', error);
-      showNotification('Failed to update reception status', 'error');
-      toast.error('Failed to update reception status');
+      console.error('Error updating pharmaciest status:', error);
+      showNotification('Failed to update pharmaciest status', 'error');
+      toast.error('Failed to update pharmaciest status');
     }
   };
 
-  const filteredreceptions = receptions.filter((reception) =>
-    `${reception.firstname} ${reception.lastname} ${reception.phoneNumber}`
+  const filteredPharmaciest = Pharmaciest.filter((pharmaciest) =>
+    `${pharmaciest.firstname} ${pharmaciest.lastname} ${pharmaciest.phoneNumber}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
   const handleRegisterPatient = () => {
-    router.push('/admin/register-reception');
+    router.push('/admin/register-pharmaciest');
   };
   return (
     <div>
@@ -75,14 +75,14 @@ const ManagePharmacist = () => {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r"
           onClick={handleRegisterPatient}
         >
-          Register Reception
+          Register pharmaciest
         </button>
         <div>
 
           <input
             type="text"
             className="w-72 px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Search receptions..."
+            placeholder="Search Pharmaciest..."
             value={searchTerm}
             onChange={handleSearch}
           />
@@ -95,20 +95,20 @@ const ManagePharmacist = () => {
               
             </th>
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-              Reception Name
+              pharmaciest Name
             </th>
             <th className="px-6 py-3 border-b-2 border-gray-300">Activate/Deactivate</th>
           </tr>
         </thead>
         <tbody>
-          {filteredreceptions.map((reception, index) => (
-            <tr key={reception.userId}>
+          {filteredPharmaciest.map((pharmaciest, index) => (
+            <tr key={pharmaciest.userId}>
               <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{index + 1}</td>
-              <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{reception.firstname} {reception.lastname}</td>
+              <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{pharmaciest.firstname} {pharmaciest.lastname}</td>
               <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                 <Switch
-                  onChange={() => handleToggle(reception.userId, reception.status)}
-                  checked={reception.status === 'active'}
+                  onChange={() => handleToggle(pharmaciest.userId, pharmaciest.status)}
+                  checked={pharmaciest.status === 'active'}
                   onColor="#86d3ff"
                   onHandleColor="#2693e6"
                   handleDiameter={30}
