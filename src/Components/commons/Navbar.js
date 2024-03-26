@@ -19,6 +19,9 @@ const Navbar = () => {
   const setUser = useStore((state) => state.setUser);
 
   useEffect(() => {
+    let userData = null;
+    userData = localStorage.getItem("userData");
+    setUser(userData);
     setIsLoggedIn(!!localStorage.getItem("token")); // Update logged-in status on component mount
   }, []);
 

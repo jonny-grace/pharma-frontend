@@ -166,91 +166,95 @@ function PrescriptionDetail() {
     }
   };
   return (
-    <div className="bg-white max-w-6xl mx-auto my-6 border border-black border-opacity-30 rounded shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-4">Prescription</h2>
-      <div className="flex flex-col md:flex-row gap-16">
-        <div className="mb-6">
-          <p className="font-bold">Patient Name:</p>
-          <p>{prescription.patientFullName}</p>
-        </div>
-        <div className="mb-6">
-          <p className="font-bold">Patient ID:</p>
-          <p>{prescription.patientId}</p>
-        </div>
-        <div className="mb-6">
-          <p className="font-bold">Patient Age:</p>
-          <p>{prescription.patientAge}</p>
-        </div>
-
-        {!priceVisible && (
-          <div className=" flex gap-3">
-            <button className=" text-green-600 px-5 " onClick={handleAccept}>
-              Accept
-            </button>
-            <button className=" text-red-600 px-5" onClick={handleReject}>
-              Reject
-            </button>
+    <div className="container mx-auto min-h-screen mt-28">
+      <div className="bg-white max-w-6xl mx-auto my-6 border border-black border-opacity-30 rounded shadow-lg p-6">
+        <h2 className="text-2xl font-bold mb-4">Prescription</h2>
+        <div className="flex flex-col md:flex-row gap-16">
+          <div className="mb-6">
+            <p className="font-bold">Patient Name:</p>
+            <p>{prescription.patientFullName}</p>
           </div>
-        )}
-      </div>
-      <div className="mb-6">
-        <p className="font-bold">Doctor Name:</p>
-        <p>{prescription.doctorFullName}</p>
-      </div>
-      <div className="mb-6">
-        <h3 className="text-lg font-bold mb-2">
-          List of Medicines with Description
-        </h3>
-        <div className="flex justify-between mx-8">
-          <h2 className="underline pb-3">Medicine Name</h2>
-          <h2></h2>
-          <h2 className="underline pb-3">Price</h2>
-        </div>
-        <div className="flex flex-col gap-4">
-          {medicines.map((medicine, index) => (
-            <div key={index} className="flex justify-between border-b-2 mx-8">
-              <p className="font-bold text-left w-[250px]">{medicine.name}</p>
+          <div className="mb-6">
+            <p className="font-bold">Patient ID:</p>
+            <p>{prescription.patientId}</p>
+          </div>
+          <div className="mb-6">
+            <p className="font-bold">Patient Age:</p>
+            <p>{prescription.patientAge}</p>
+          </div>
 
-              {priceVisible && (
-                <div className="">
-                  <input
-                    type="checkbox"
-                    checked={!medicine.availablity}
-                    onChange={(event) => handleavailablityChange(index, event)}
-                  />
-                  <label className="pb-3">not available</label>
-                </div>
-              )}
-              {priceVisible && (
-                <div>
-                  <input
-                    type="text"
-                    value={medicine.price}
-                    onChange={(event) => handlePriceChange(index, event)}
-                    disabled={medicine.availablity === false}
-                    className="w-[150px] px-2 py-1 rounded border border-gray-300"
-                  />
-                </div>
-              )}
+          {!priceVisible && (
+            <div className=" flex gap-3">
+              <button className=" text-green-600 px-5 " onClick={handleAccept}>
+                Accept
+              </button>
+              <button className=" text-red-600 px-5" onClick={handleReject}>
+                Reject
+              </button>
             </div>
-          ))}
+          )}
         </div>
-      </div>
-      <div className="flex justify-end">
-        <button
-          onClick={handleConfirm}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"
-        >
-          Confirm
-        </button>
-        {prescription.status === "assigned" && (
+        <div className="mb-6">
+          <p className="font-bold">Doctor Name:</p>
+          <p>{prescription.doctorFullName}</p>
+        </div>
+        <div className="mb-6">
+          <h3 className="text-lg font-bold mb-2">
+            List of Medicines with Description
+          </h3>
+          <div className="flex justify-between mx-8">
+            <h2 className="underline pb-3">Medicine Name</h2>
+            <h2></h2>
+            <h2 className="underline pb-3">Price</h2>
+          </div>
+          <div className="flex flex-col gap-4">
+            {medicines.map((medicine, index) => (
+              <div key={index} className="flex justify-between border-b-2 mx-8">
+                <p className="font-bold text-left w-[250px]">{medicine.name}</p>
+
+                {priceVisible && (
+                  <div className="">
+                    <input
+                      type="checkbox"
+                      checked={!medicine.availablity}
+                      onChange={(event) =>
+                        handleavailablityChange(index, event)
+                      }
+                    />
+                    <label className="pb-3">not available</label>
+                  </div>
+                )}
+                {priceVisible && (
+                  <div>
+                    <input
+                      type="text"
+                      value={medicine.price}
+                      onChange={(event) => handlePriceChange(index, event)}
+                      disabled={medicine.availablity === false}
+                      className="w-[150px] px-2 py-1 rounded border border-gray-300"
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex justify-end">
           <button
-            onClick={PrintPrescription}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleConfirm}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"
           >
-            Print
+            Confirm
           </button>
-        )}
+          {prescription.status === "assigned" && (
+            <button
+              onClick={PrintPrescription}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Print
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
