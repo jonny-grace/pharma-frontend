@@ -16,7 +16,7 @@ const page = () => {
     const fetchData = async () => {
       try {
         const res = await api.get(`/pharmacy/me/${userId}`);
-        console.log(res.data);
+        // console.log(res.data);
         setPharmacy(res.data);
       } catch (err) {
         console.log(err);
@@ -26,8 +26,10 @@ const page = () => {
     fetchData();
   }, [userId]);
   return (
-    <div className="pt-28">
-      <Prescriptions pharmacyName={pharmacy && pharmacy.pharmacyName} />
+    <div className="container mx-auto w-full">
+      <div className="pt-28 ">
+        <Prescriptions pharmacyName={pharmacy && pharmacy.pharmacyName} />
+      </div>
     </div>
   );
 };

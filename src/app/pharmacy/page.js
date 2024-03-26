@@ -159,8 +159,10 @@ function Home() {
   console.log(user);
 
   return (
-    <div className="flex min-h-screen mt-[110px]">
-      <ManagePatients pharmacyName={pharmacy && pharmacy.pharmacyName} />
+    <div className="container mx-auto w-full">
+      <div className="flex min-h-screen mt-[110px] w-full">
+        <ManagePatients pharmacyName={pharmacy && pharmacy.pharmacyName} />
+      </div>
     </div>
   );
 }

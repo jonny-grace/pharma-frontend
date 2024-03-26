@@ -11,16 +11,16 @@ export default function RootLayout({ children }) {
   console.log(pathname);
   const routs = [
     {
-      name: "dashboard",
-      Link: "/pharmacy/dashboard",
-    },
-    {
-      name: "pharmacy",
+      name: "Req for offer",
       Link: "/pharmacy",
     },
     {
-      name: "orders",
+      name: "Orderd",
       Link: "/pharmacy/orders",
+    },
+    {
+      name: "Dispatch status",
+      Link: "/pharmacy/dispatches",
     },
   ];
   return (
@@ -28,14 +28,14 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <Navbar />
         <div className="flex gap-5">
-          <div className="min-w-48 max-w-48 border-r bg-gray-100 mt-24 pb-5 min-h-screen overflow-y-auto grid pt-5">
-            <div className="grid h-max mx-auto gap-y-1 w-full">
+          <div className="min-w-48 max-w-48 border-r bg-gray-50 mt-24 pb-5 min-h-screen overflow-y-auto grid pt-5">
+            <div className="grid h-max mx-auto gap-y-1 w-full mt-16 px-3">
               {routs.map((item) => (
                 <Link
                   href={item.Link}
                   className={
                     pathname === item.Link
-                      ? "h-min  bg-white pl-5 py-2 capitalize  border-dotted"
+                      ? "h-min  bg-white pl-5 py-2 capitalize  border-4 border-dotted border-gray-600"
                       : "h-min  bg-white pl-5 py-2 capitalize border-2"
                   }
                 >
