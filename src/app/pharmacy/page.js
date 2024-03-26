@@ -14,7 +14,7 @@ import { showNotification } from "@/Components/BrowserNotification";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/useStore";
 
-function page() {
+function Home() {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
@@ -150,9 +150,6 @@ function page() {
         <Prescriptions pharmacyName={pharmacy && pharmacy.pharmacyName} />
       ),
     },
-    // {
-    //   name: 'Logout',
-    // }
   ];
 
   const handleOptionClick = (option) => {
@@ -162,19 +159,10 @@ function page() {
   console.log(user);
 
   return (
-    <div className="flex min-h-screen mt-[110px]">
-      <div></div>
-      <Sidebar
-        options={options}
-        activeOption={activeOption}
-        onOptionClick={handleOptionClick}
-      />
-
-      <MainContent>
-        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
-
-        {options.find((o) => o.name === activeOption)?.component}
-      </MainContent>
+    <div className="container mx-auto w-full">
+      <div className="flex min-h-screen mt-[110px] w-full">
+        <ManagePatients pharmacyName={pharmacy && pharmacy.pharmacyName} />
+      </div>
     </div>
   );
 }
@@ -183,4 +171,4 @@ function MainContent({ children }) {
   return <div className="flex-1 p-5">{children}</div>;
 }
 
-export default page;
+export default Home;

@@ -5,8 +5,11 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import io from "socket.io-client";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 function PrescriptionDetail() {
+  const [accept, setAccept] = useState(false);
+
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   const socket = io(`${api_url}`);
   const router = useRouter();
@@ -116,6 +119,8 @@ function PrescriptionDetail() {
   };
 
   const handleAccept = async () => {
+    setAccept(true);
+
     if (typeof window !== "undefined") {
       try {
         const token = localStorage.getItem("token");
@@ -167,6 +172,9 @@ function PrescriptionDetail() {
   };
   return (
     <div className="container mx-auto min-h-screen mt-28">
+      <div>
+        <Link href="/pharmacy">back</Link>
+      </div>
       <div className="bg-white max-w-6xl mx-auto my-6 border border-black border-opacity-30 rounded shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-4">Prescription</h2>
         <div className="flex flex-col md:flex-row gap-16">
@@ -207,45 +215,119 @@ function PrescriptionDetail() {
             <h2></h2>
             <h2 className="underline pb-3">Price</h2>
           </div>
-          <div className="flex flex-col gap-4">
-            {medicines.map((medicine, index) => (
-              <div key={index} className="flex justify-between border-b-2 mx-8">
-                <p className="font-bold text-left w-[250px]">{medicine.name}</p>
+          <table className="text-center w-full mt-8 overflow-x-auto">
+            <thead className="bg-secondary h-10">
+              <tr className="text-white">
+                <th
+                  className="border-r-2 border-gray-50 whitespace-nowrap"
+                  rowSpan="2"
+                >
+                  S.No
+                </th>
+                <th
+                  className="border-r-2 border-gray-50 whitespace-nowrap"
+                  rowSpan="2"
+                >
+                  Drug Name
+                </th>
+                <th
+                  className="border-r-2 border-gray-50 whitespace-nowrap"
+                  rowSpan="2"
+                >
+                  Description
+                </th>
+                <th
+                  className="border-r-2 border-gray-50 whitespace-nowrap"
+                  colSpan="3"
+                >
+                  Essential
+                </th>
+                {accept && (
+                  <>
+                    <th
+                      className="border-r-2 border-gray-50 whitespace-nowrap w-10"
+                      rowSpan="2"
+                    >
+                      Price
+                    </th>
+                    <th
+                      className="border-r-2 border-gray-50 whitespace-nowrap w-10"
+                      rowSpan="2"
+                    >
+                      Country of Origin
+                    </th>
+                  </>
+                )}
+              </tr>
+              <tr className="text-white">
+                <th className="border-r-2 border-gray-50 whitespace-nowrap">
+                  Mandatory
+                </th>
+                <th className="border-r-2 border-gray-50 whitespace-nowrap">
+                  Supplementary
+                </th>
+                <th className="border-r-2 border-gray-50 whitespace-nowrap">
+                  Availability
+                </th>
+              </tr>
+            </thead>
 
-                {priceVisible && (
-                  <div className="">
-                    <input
-                      type="checkbox"
-                      checked={!medicine.availablity}
-                      onChange={(event) =>
-                        handleavailablityChange(index, event)
-                      }
-                    />
-                    <label className="pb-3">not available</label>
-                  </div>
-                )}
-                {priceVisible && (
-                  <div>
-                    <input
-                      type="text"
-                      value={medicine.price}
-                      onChange={(event) => handlePriceChange(index, event)}
-                      disabled={medicine.availablity === false}
-                      className="w-[150px] px-2 py-1 rounded border border-gray-300"
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+            <tbody>
+              {medicines.map((item, index) => (
+                <tr
+                  key={index}
+                  className={
+                    (index + 1) % 2 == 0
+                      ? "bg-[#F3F3F3] h-10 text-[#595959] text-base xll:text-xl"
+                      : "bg-[#E7E7E7] h-10 text-[#595959] text-base xll:text-xl"
+                  }
+                >
+                  <td className="border-2 border-white text-center">
+                    {index + 1}
+                  </td>
+                  <td className="border-2 border-white text-center">
+                    {item.name}
+                  </td>
+                  <td className="border-2 border-white text-center">
+                    {item.description}
+                  </td>
+                  <td className="border-2 border-white text-center">
+                    Mandatory
+                  </td>
+                  <td className="border-2 border-white h-full">Yes</td>
+                  <td className="border-2 border-white w-10">Available</td>
+                  {accept && (
+                    <>
+                      <td className="border-2 border-white w-10">
+                        <input type="number" />
+                      </td>
+                      <td className="border-2 border-white h-full">
+                        <input type="text" />
+                      </td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div className="flex justify-end">
-          <button
-            onClick={handleConfirm}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"
-          >
-            Confirm
-          </button>
+          {accept ? (
+            <button
+              onClick={handleConfirm}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"
+            >
+              Confirm
+            </button>
+          ) : (
+            <button
+              onClick={handleAccept}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"
+            >
+              Accept
+            </button>
+          )}
+
           {prescription.status === "assigned" && (
             <button
               onClick={PrintPrescription}
