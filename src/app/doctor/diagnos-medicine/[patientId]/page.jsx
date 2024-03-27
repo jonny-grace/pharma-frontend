@@ -19,7 +19,7 @@ const Page = () => {
       ? path.slice(doctorIndex + "doctor/diagnos-medicine/".length)
       : "";
 
-  console.log(patientId);
+  console.log("patientId",patientId);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState();
   const [vitals, setVitals] = useState({});
@@ -28,11 +28,19 @@ const Page = () => {
   useEffect(() => {
     const getPatient = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/doctor/patient/${patientId}`
-        );
-        const data = response.data;
 
+        const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/doctor/patient/${patientId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = response.data;
+  
+console.log(data);
         if (data.patient) {
           setPatient(data.patient);
           setVitals(data.apointment);
@@ -44,7 +52,7 @@ const Page = () => {
         setLoading(false);
       }
     };
-
+ 
     getPatient();
   }, []);
 

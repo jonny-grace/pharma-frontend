@@ -10,7 +10,6 @@ function RegisterPatient() {
     lastname: "",
     phoneNumber: "",
     email: "",
-
     username: "",
     age: "",
     gender: "male",
@@ -20,7 +19,7 @@ function RegisterPatient() {
     subCity: "",
     woreda: "",
     houseNumber: "",
-    allergies: "",
+    
   });
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -81,19 +80,21 @@ function RegisterPatient() {
 
     return (
 
-        <div className="flex  justify-center p-4 overflow-hidden">
+        <div className="flex j mx-10 p-4 bg-white my-10 rounded-md  overflow-hidden">
           
-          <div className="mx-auto w-full max-w-7xl bg-white">
-            <h2 className="text-2xl font-semibold text-gray-700 text-center my-5">
+          <div className="  w-full  px-5 pb-10 rounded-md ">
+           <div className=" max-w-3xl xl:max-w-4xl xxl:max-w-8xl mx-auto">
+            <h2 className="text-xl font-semibold text-gray-700 text-center my-3">
               Customer Registration
               
             </h2>
-            <hr className="  bg-blue-500 mx-10 mb-5" />
+            <hr className="border-t-2 border-blue-300 px-2  mb-5" />
+</div>
             <form
-              className="flex flex-col  w-full max-w-lg mx-auto"
+              className="flex flex-col  w-full max-w-3xl xl:max-w-4xl xxl:max-w-8xl mx-auto"
               onSubmit={handleSubmit}
             >
-              <div className=" flex gap-24">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <div className="mb-5">
                   <label
                     htmlFor="firstname"
@@ -145,11 +146,8 @@ function RegisterPatient() {
                     className="mt-1 px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
                 </div>
-              </div>
-              
-  
-              <div className=" flex gap-24">
-              <div className="mb-5">
+
+                <div className="mb-5">
                   <label
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700"
@@ -202,8 +200,11 @@ function RegisterPatient() {
                   />
                 </div>
               </div>
+              
   
-              <div className=" flex gap-24">
+        
+  
+              <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <div className="mb-5">
                   <label
                     htmlFor="gender"
@@ -240,8 +241,7 @@ function RegisterPatient() {
                     className="mt-1 px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
                 </div>
-              </div>
-              <div className=" flex gap-24">
+              
                 <div className="mb-5">
                   <label
                     htmlFor="region"
@@ -294,9 +294,7 @@ function RegisterPatient() {
                     className="mt-1 px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
                 </div>
-              </div>
               
-              <div className=" flex gap-24">
               <div className="mb-5">
                   <label
                     htmlFor="woreda"
@@ -332,30 +330,14 @@ function RegisterPatient() {
                   />
                 </div>
   
-                <div className="mb-5">
-                  <label
-                    htmlFor="allergies"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Allergies
-                  </label>
-                  <input
-                    required
-                    type="text"
-                    name="allergies"
-                    id="allergies"
-                    value={patients.allergies}
-                    onChange={handleInputChange}
-                    className="mt-1 px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  />
-                </div>
+                
               </div>
-              <div>
+              <div className=" pt-10 flex justify-center">
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="flex justify-center py-2 px-20 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  Create Patient
+                 SUBMIT
                 </button>
               </div>
             </form>
