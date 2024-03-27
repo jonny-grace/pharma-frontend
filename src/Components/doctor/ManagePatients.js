@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {useRouter} from 'next/navigation'
+import { toast } from 'react-hot-toast';
 
 const ManagePatients = () => {
   const [patientId, setPatientId] = useState('');
@@ -12,35 +13,52 @@ const ManagePatients = () => {
 
   const router = useRouter();
 
+  function showNotification(message, type) {
+    toast[type](message, {
+      duration: 5000, // 5 seconds
+    });
+  }
   const handleSearch = async () => {
     if (!patientId) return;
-
+  
     setLoading(true);
-
+  
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/doctor/patient/${patientId}`);
-      const data = response.data;
-      console.log(response.data)
-        if(response.data===null){
-          setError('Patient not found');
-          setLoading(false);
-          setPatientId('');
-        }else{
-         
-          
-          setError(null);
-          setLoading(false);
-          router.push(
-            `/doctor/diagnos-medicine/${patientId}`,
-            );
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/doctor/patient/${patientId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      
+      );
+      const data = response.data;
+  
+      if (data.patient && data.apointment && data.doctorDetail) {
+        console.log(data);
+        setError(null);
+        setLoading(false);
+        router.push(`/doctor/diagnos-medicine/${patientId}`);
+      } else if (data.message === "Patient not found") {
+        showNotification('Failed to update nurse status', 'error');
+        setError("Patient not found");
+        setLoading(false);
+        setPatientId("");
+      } else if (data.message === "apointment not found") {
+        showNotification('This customer does not have active vital sign assigned please check with nurse first', 'error');
+        setError("Customer does not have active vital sign assigned please check with nurse first");
+        setLoading(false);
+        setPatientId("");
+      } else {
+        console.log("Unknown error:", data.message);
+      }
     } catch (error) {
-      console.error('Error fetching patient:', error);
+      setLoading(false);
+      console.error("Error fetching patient:", error);
     }
-
-   
   };
+  
 
   const openCreatePrescription = (patientId) => {
     // Handle creating prescription for the patient

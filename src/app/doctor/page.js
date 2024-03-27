@@ -23,7 +23,7 @@ function page() {
    userData = JSON.parse(localStorage.getItem('userData'));
    userId = userData && userData.userId;
    token = localStorage.getItem('token');
-  //  console.log(userData)
+
   }
 
   useEffect(() => {
