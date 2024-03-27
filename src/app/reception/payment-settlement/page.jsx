@@ -2,7 +2,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="container mx-auto px-5 pb-16">
+    <div className="container mx-auto px-5 pb-16 mt-[90px]">
       <div className="max-w-6xl mx-auto  xll:max-w-7xl xll:mx-auto my-16 overflow-x-auto">
         <table className="text-center w-full mt-8 overflow-x-auto">
           <thead className="bg-secondary h-10">
@@ -49,6 +49,7 @@ const page = () => {
             ))}
           </tbody>
         </table>
+    
       </div>
       <div className="flex justify-between">
         <div className="w-full hidden md:flex"></div>
@@ -62,6 +63,10 @@ const page = () => {
           </h1>
         </div>
       </div>
+      <div className=" lg:flex   items-end justify-normal lg:gap-24">
+          <input className=" bg-blue-950 mt-10 rounded-md text-white placeholder-white text-center" placeholder="Enter Invoice number" />
+          <button className=" bg-red-600 px-16 py-2 ml-32 h-10 rounded-md  text-center text-white" >Finish</button>
+        </div>
     </div>
   );
 };
