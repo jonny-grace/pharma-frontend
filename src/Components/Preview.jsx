@@ -5,14 +5,26 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Image from "next/image";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 export default function DiagnosisPreview({
   open,
   setOpen,
+  onSubmit,
   data = { druges: [] },
 }) {
+
+  const path = usePathname();
+  const doctorIndex = path.indexOf("doctor/diagnos-medicine/");
+  const patientId =
+    doctorIndex !== -1
+      ? path.slice(doctorIndex + "doctor/diagnos-medicine/".length)
+      : "";
+
+  // console.log("patientId",patientId);
   //   const [open, setOpen] = useState(false);
-  console.log(data);
+  // console.log(data);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -20,6 +32,8 @@ export default function DiagnosisPreview({
   const handleClose = (event, reason) => {
     setOpen(false);
   };
+
+  
 
   return (
     <div>
@@ -40,10 +54,10 @@ export default function DiagnosisPreview({
                   Doctor Prescription Preview{" "}
                 </h1>
                 <div className="flex  bg-slate-300  mr-4 gap-10 px=5">
-                  <button className="bg-gray-600 border-4 shadow-lg hover:bg-gray-700 text-white font-bold px-10 py-16 w-40 h-40  rounded-full mb-2">
+                  <button onClick={handleClose} className="bg-gray-600 border-4 shadow-lg hover:bg-gray-700 text-white font-bold px-10 py-16 w-40 h-40  rounded-full mb-2">
                     Edit
                   </button>
-                  <button className="bg-red-500 border-4 shadow-lg hover:bg-red-700 text-white font-bold px-10 py-16 w-40 h-40  rounded-full text-center">
+                  <button onClick={onSubmit} className="bg-red-500 border-4 shadow-lg hover:bg-red-700 text-white font-bold px-10 py-16 w-40 h-40  rounded-full text-center">
                     issue Prescription
                   </button>
                 </div>
@@ -92,7 +106,7 @@ export default function DiagnosisPreview({
                           {medicine.quantity}
                         </h2>
                         <h2 className=" border-2 px-3 py-2 font-bold uppercase text-center text-white rounded-md min-w-[139px] ">
-                          {medicine.essential}
+                          {medicine.essentiality ? "Yes" : "No"}
                         </h2>
                       </div>
                     ))}
@@ -103,12 +117,7 @@ export default function DiagnosisPreview({
             <div>{/* <pre>{JSON.stringify(data.druges, null, 2)}</pre> */}</div>
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus></Button>
-          <Button onClick={handleClose} autoFocus>
-            Close
-          </Button>
-        </DialogActions>
+        
       </Dialog>
     </div>
   );

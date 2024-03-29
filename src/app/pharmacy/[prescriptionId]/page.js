@@ -1,14 +1,18 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import io from "socket.io-client";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import useStore from "@/store/useStore";
 
 function PrescriptionDetail() {
-  const [accept, setAccept] = useState(false);
+  // const [accept, setAccept] = useState(false);
+const openAccept = useStore((state) => state.openAccept);
+const setOpenAccept = useStore((state) => state.setOpenAccept);
+const setAcceptClose = useStore((state) => state.setCloseAccept);
 
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   const socket = io(`${api_url}`);
@@ -77,6 +81,7 @@ function PrescriptionDetail() {
         )
         .then((response) => {
           console.log(response.data);
+          setAcceptClose();
           router.push("/pharmacy");
         })
         .catch((error) => {
@@ -106,20 +111,10 @@ function PrescriptionDetail() {
     router.push(`/print/${prescriptionId}`);
   };
 
-  const handlePriceChange = (index, event) => {
-    const updatedMedicines = [...medicines];
-    updatedMedicines[index].price = event.target.value;
-    setMedicines(updatedMedicines);
-  };
 
-  const handleavailablityChange = (index, event) => {
-    const updatedMedicines = [...medicines];
-    updatedMedicines[index].availablity = !event.target.checked;
-    setMedicines(updatedMedicines);
-  };
 
   const handleAccept = async () => {
-    setAccept(true);
+    
 
     if (typeof window !== "undefined") {
       try {
@@ -130,12 +125,14 @@ function PrescriptionDetail() {
         console.error(err);
       }
     }
+
+    setOpenAccept();
   };
   socket.on("prescriptionAccepted", ({ numberleft }) => {
     // showNotification(`new accept is responded from other phamacy only ${numberleft} is left to accept `,"success");
 
     // Reload the page
-    window.location.reload();
+    // window.location.reload();
   });
   socket.on("acceptPharmacyResponse", (response) => {
     if (response.success) {
@@ -191,7 +188,7 @@ function PrescriptionDetail() {
             <p>{prescription.patientAge}</p>
           </div>
 
-          {!priceVisible && (
+          {/* {!priceVisible && (
             <div className=" flex gap-3">
               <button className=" text-green-600 px-5 " onClick={handleAccept}>
                 Accept
@@ -200,7 +197,7 @@ function PrescriptionDetail() {
                 Reject
               </button>
             </div>
-          )}
+          )} */}
         </div>
         <div className="mb-6">
           <p className="font-bold">Doctor Name:</p>
@@ -242,7 +239,7 @@ function PrescriptionDetail() {
                 >
                   Essential
                 </th>
-                {accept && (
+                {openAccept && (
                   <>
                     <th
                       className="border-r-2 border-gray-50 whitespace-nowrap w-10"
@@ -296,7 +293,7 @@ function PrescriptionDetail() {
                   </td>
                   <td className="border-2 border-white h-full">Yes</td>
                   <td className="border-2 border-white w-10">Available</td>
-                  {accept && (
+                  {openAccept && (
                     <>
                       <td className="border-2 border-white w-10">
                         <input type="number" />
@@ -312,7 +309,7 @@ function PrescriptionDetail() {
           </table>
         </div>
         <div className="flex justify-end">
-          {accept ? (
+          {openAccept ? (
             <button
               onClick={handleConfirm}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"

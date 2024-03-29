@@ -59,15 +59,7 @@ const ManagePatients = () => {
     }
   };
   
-
-  const openCreatePrescription = (patientId) => {
-    // Handle creating prescription for the patient
-    console.log('Creating prescription for patient:', patientId);
-    router.push(
-      `/doctor/${patientId}`,
-      );
-  };
-
+ 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleSearch();

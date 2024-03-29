@@ -19,12 +19,12 @@ const Page = () => {
       ? path.slice(doctorIndex + "doctor/diagnos-medicine/".length)
       : "";
 
-  console.log("patientId",patientId);
+  // console.log("patientId",patientId);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState();
   const [vitals, setVitals] = useState({});
   const [patient, setPatient] = useState({});
-
+ const [doctor, setDoctor] = useState({});
   useEffect(() => {
     const getPatient = async () => {
       try {
@@ -40,11 +40,14 @@ const Page = () => {
       );
       const data = response.data;
   
-console.log(data);
+// console.log(data);
         if (data.patient) {
           setPatient(data.patient);
           setVitals(data.apointment);
           //  console.log(data);
+        }
+        if (data.doctorDetail) {
+          setDoctor(data.doctorDetail);
         }
       } catch (error) {
         console.error("Error getting patient:", error);
@@ -65,7 +68,7 @@ console.log(data);
   } = useForm({
     defaultValues: {
       druges: [
-        { name: "eeee ", description: " eee", quantity: 1, essential: false },
+        { name: "eeee ", description: " eee", quantity: 1, essentiality: false },
       ],
     },
   });
@@ -80,16 +83,49 @@ console.log(data);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const onSubmit = async (action, data) => {
-    console.log(action);
-    console.log(data);
-    setError("");
-    setLoading(true);
-  };
+  const onSubmit = async (e) => {
+   
+      e.preventDefault();
+      const prescriptionData = {
+        patientId: patient.patientId,
+        pfirstname: patient.firstname,
+        plastname: patient.lastname,
+        dfirstname: doctor.firstname,
+        dlastname: doctor.lastname,
+        doctorId: doctor.userId,
+        patientAge: patient.age,
+        medicines: data.druges,
+      };
+      console.log("prescriptionData", prescriptionData);
+  
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/doctor/create/prescription`,
+          prescriptionData
+        );
+        console.log("Prescription created:", response.data);
+        socket.emit("newPrescription", response.data);
+        alert("Prescription created");
+  notify(
+            `prescription generated for patient ${patient.firstname} ${patient.lastname}`,
+            "success"
+          );
+        if (response.status === 200) {
+          
+          // notify(`prescription generated for patient ${patient.firstname} ${patient.lastname}`,"success");
+          socket.on("disconnect");
+          router.push("/doctor");
+        } else {
+          console.error("Error creating prescription:", response.data);
+        }
+      } catch (error) {
+        console.error("Error creating prescription:", error);
+      }
+    };
 
   const handlePreview = (data) => {
     // onSubmit("preview", data);
-    console.log(data);
+    console.log('data',data);
     setData(data);
     setOpen(true);
   };
@@ -99,9 +135,11 @@ console.log(data);
     onSubmit("submit", data);
   };
 
+
+ 
   return (
     <>
-      <DiagnosisPreview open={open} setOpen={setOpen} data={data} />
+      <DiagnosisPreview open={open} onSubmit={onSubmit} setOpen={setOpen} data={data} />
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       <div className="  grid grid-cols-8 gap-2 w-full mt-[110px] ">
         <div className=" col-span-7 md:col-span-3 xl:col-span-2">
@@ -204,7 +242,7 @@ console.log(data);
                             <input
                               id={`druges-${index}-name`}
                               type="checkbox"
-                              {...register(`druges.${index}.essential`, {})}
+                              {...register(`druges.${index}.essentiality`, {})}
                             />
                             <label htmlFor={`druges-${index}-value`}>
                               Essential *

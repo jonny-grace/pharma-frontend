@@ -6,6 +6,7 @@ export const CreateAuthSlice = (set, get) => ({
   pageLoade: true,
   auth: false,
   loading: false,
+  openAccept:false,
   async setUser(data) {
     set((state) => ({ ...state, user: data }));
   },
@@ -17,4 +18,14 @@ export const CreateAuthSlice = (set, get) => ({
 
     set((state) => ({ ...state, auth: false }));
   },
+  setOpenAccept() {
+    set((state) => ({...state, openAccept: true }));
+  },
+  setCloseAccept() {
+    set((state) => ({...state, openAccept: false }));
+  }
+
+  
+
+  
 });
