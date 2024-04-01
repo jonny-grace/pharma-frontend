@@ -24,6 +24,7 @@ const setAcceptClose = useStore((state) => state.setCloseAccept);
 
   const [prescription, setPrescription] = useState({});
   const [medicines, setMedicines] = useState([]);
+  const [medicinesdetails, setMedicinesdetails] = useState([]);
   const [priceVisible, setPriceVisible] = useState(false);
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const setAcceptClose = useStore((state) => state.setCloseAccept);
                 ...medicine,
                 price: "",
                 availablity: false,
+                countryOfOrigin: "dffd",
               }))
             );
             if (datafound) {
@@ -111,6 +113,23 @@ const setAcceptClose = useStore((state) => state.setCloseAccept);
     router.push(`/print/${prescriptionId}`);
   };
 
+  const handlePriceChange = (index, event) => {
+    const updatedMedicines = [...medicines];
+    updatedMedicines[index].price = event.target.value;
+    setMedicines(updatedMedicines);
+  };
+
+  const handleavailablityChange = (index, event) => {
+    const updatedMedicines = [...medicines];
+    updatedMedicines[index].availablity = !event.target.checked;
+    setMedicines(updatedMedicines);
+  };
+
+  const handleCountryChange = (index, event) => {
+    const updatedMedicines = [...medicines];
+    updatedMedicines[index].countryOfOrigin = event.target.value;
+    setMedicines(updatedMedicines);
+  };
 
 
   const handleAccept = async () => {
@@ -235,12 +254,15 @@ const setAcceptClose = useStore((state) => state.setCloseAccept);
                 </th>
                 <th
                   className="border-r-2 border-gray-50 whitespace-nowrap"
-                  colSpan="3"
+                  colSpan="2"
                 >
                   Essential
                 </th>
                 {openAccept && (
-                  <>
+                  <><th  className="border-r-2 px-3 border-gray-50 whitespace-nowrap w-10"
+                      rowSpan="2">
+                  Availability
+                </th>
                     <th
                       className="border-r-2 border-gray-50 whitespace-nowrap w-10"
                       rowSpan="2"
@@ -253,6 +275,7 @@ const setAcceptClose = useStore((state) => state.setCloseAccept);
                     >
                       Country of Origin
                     </th>
+                    
                   </>
                 )}
               </tr>
@@ -263,9 +286,7 @@ const setAcceptClose = useStore((state) => state.setCloseAccept);
                 <th className="border-r-2 border-gray-50 whitespace-nowrap">
                   Supplementary
                 </th>
-                <th className="border-r-2 border-gray-50 whitespace-nowrap">
-                  Availability
-                </th>
+                
               </tr>
             </thead>
 
@@ -289,18 +310,31 @@ const setAcceptClose = useStore((state) => state.setCloseAccept);
                     {item.description}
                   </td>
                   <td className="border-2 border-white text-center">
-                    Mandatory
+                    {item.essentiality && "Yes" }
                   </td>
-                  <td className="border-2 border-white h-full">Yes</td>
-                  <td className="border-2 border-white w-10">Available</td>
+                  <td className="border-2 border-white h-full">{ !item.essentiality && "No"}</td>
+                 
                   {openAccept && (
                     <>
+                     <td className="border-2 border-white w-10"> <input
+                    type="checkbox"
+                    checked={!item.availablity}
+                    onChange={(event) => handleavailablityChange(index, event)}/></td>
                       <td className="border-2 border-white w-10">
-                        <input type="number" />
+                      <input
+                    type="number"
+                    value={item.price}
+                    onChange={(event) => handlePriceChange(index, event)}
+                    disabled={medicines.availablity === false} className=" min-w-10 max-w-48" />
                       </td>
                       <td className="border-2 border-white h-full">
-                        <input type="text" />
+                      <input
+                    type="text"
+                    value={item.countryOfOrigin}
+                    onChange={(event) => handleCountryChange(index, event)}
+                    className=" min-w-10 max-w-48" />
                       </td>
+                     
                     </>
                   )}
                 </tr>

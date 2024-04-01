@@ -18,11 +18,11 @@ const FindPatient = () => {
     setLoading(true);
 
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/pharmaciest/patient/${patientId}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/pharmaciest/patient/prescription/${patientId}`);
       const data = response.data.patient;
       console.log(response.data.patient)
-        if(response.data===null){
-          setError('Patient not found');
+        if(response.data===null || response.data === undefined){
+          setError('prescription not found');
           setLoading(false);
           setPatientId('');
           
@@ -31,17 +31,17 @@ const FindPatient = () => {
           setError(null);
           setLoading(false);
           router.push(
-            `/pharmaciest/${data.patientId}`,
+            `/pharmaciest/${patientId}`,
             );
         }
       ;
     } catch (error) {
 
-      if (error.response && error.response.status === 404 && error.response.data.message === 'Patient have a today active appointment') {
+      if (error.response && error.response.status === 404 && error.response.data.message === 'prescription not found') {
         // alert('vital signs already assigned ');
-        setError("Vital signs already assigned  for this patient"); 
+        setError("prescription not found"); 
       }else{
-        alert('Patient not found');
+        alert('prescription not found for this customer');
       }
         setLoading(false);
       console.error('Error fetching patient:', error);

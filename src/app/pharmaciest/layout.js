@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 import { usePathname } from "next/navigation";
 export default function RootLayout({ children }) {
   const pathname = usePathname();
-  console.log(pathname);
+  // console.log(pathname);
   
   return (
     <html lang="en">
