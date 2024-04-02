@@ -43,15 +43,16 @@ function page() {
     router.push(`/pharmaciest/prescriptiondetail/${prescriptionId}`);
   };
   return (
-    <div className=" min-h-screen w-full mt-[110px]">
+    <div className=" min-h-screen w-full mt-[160px]">
       {/* <pre>{JSON.stringify(filteredPrescriptions, null, 2)}</pre> */}
 
-      <div className="flex justify-between mb-4 w-full">
+      <div className="flex   mb-4 w-full">
         <div>
-          <div></div>
+          <div className=" px-10  text-2xl">PHARMACIST PRESCRIPTION PREVIEW 
+</div>
         </div>
-      </div>
-      <table className="min-w-full bg-white">
+      
+      <table className="min-w-[80%] bg-white">
         <thead>
           <tr className="gap-2">
           <th>
@@ -112,6 +113,7 @@ function page() {
             ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
